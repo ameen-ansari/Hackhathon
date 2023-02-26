@@ -4,29 +4,10 @@ import { useState } from "react";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "@/config/Firebase";
 import { useRouter } from "next/router";
+import UseSignIn from "@/Hooks/UseSignIn";
 
 export default function SignIn() {
-  let [values, setvalues] = useState<any>({
-    email: "",
-    password: "",
-  });
-  function register(e: any) {
-    let inputs = { [e.target.name]: e.target.value };
-    setvalues({ ...values, ...inputs });
-  }
-
-  let Router = useRouter();
-  let submitH = async (e: any) => {
-    e.preventDefault();
-
-    try {
-      await signInWithEmailAndPassword(auth, values.email, values.password);
-      alert("SignIn SuccessFully");
-      Router.push("/");
-    } catch (error) {
-      alert(error);
-    }
-  };
+  const { register, values, submitH } = UseSignIn();
   return (
     <div className={logincss.container}>
       <div className={logincss.login}>

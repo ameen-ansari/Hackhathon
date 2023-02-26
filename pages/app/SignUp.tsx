@@ -1,56 +1,10 @@
 import logincss from "/styles/SignUp.module.css";
 import Link from "next/link";
-import { useState } from "react";
-import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth, db } from "@/config/Firebase";
-import { addDoc, collection, doc, updateDoc } from "firebase/firestore";
-import { useRouter } from "next/router";
-// import {auth} from '../../config/auth'
+import UseSignUp from "@/Hooks/UseSignUp";
 
-// import useSignUp from "../Hooks/useSignUp";
 
 export default function SignUp() {
-  let [values, setvalues] = useState<any>({
-    email: "",
-    userName: "",
-    phoneNumber: "",
-    password: "",
-    uid: "",
-  });
-  function register(e: any) {
-    let inputs = { [e.target.name]: e.target.value };
-    setvalues({ ...values, ...inputs });
-  }
-  let Router = useRouter()
-  let submitH = async (e: any) => {
-    e.preventDefault();
-    try {
-      let user = await createUserWithEmailAndPassword(
-        auth,
-        values.email,
-        values.password
-      );
-      let sendData = await addDoc(collection(db, "Users"), values);
-      let ref = doc(db, "Users", sendData.id);
-      updateDoc(ref, {
-        uid: user.user.uid,
-        docId: sendData.id,
-      });
-
-      alert("Acount Created");
-      setvalues({
-        email: "",
-        userName: "",
-        phoneNumber: "",
-        password: "",
-        uid: "",
-      })
-    } catch (error) {
-      alert(error);
-    }
-    Router.push('/app/SignIn')
-    
-  };
+  const { values, register, submitH } = UseSignUp();
   return (
     <div className={logincss.container}>
       <div className={logincss.login}>

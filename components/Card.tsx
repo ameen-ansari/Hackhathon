@@ -1,7 +1,7 @@
-import React, { useTransition } from "react";
+import React  from "react";
 import style from "../styles/card.module.css";
 
-function Event(prop:any) {
+function Card(prop:any) {
   return (
     <div key={prop.key} style={{ fontFamily: "Open Sans" }}>
       <div className={`${style.cardP} card`}>
@@ -49,4 +49,4 @@ function Event(prop:any) {
   );
 }
 
-export default Event;
+export default Card;
