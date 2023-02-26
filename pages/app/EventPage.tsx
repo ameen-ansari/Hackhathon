@@ -16,6 +16,7 @@ import { onAuthStateChanged } from "firebase/auth";
 
 function EventPage() {
   const [data, setdata] = useState([]);
+  const [arr1, setarr1] = useState([]);
   const [user, setuser] = useState<any>({
     userName: "",
   });
@@ -49,14 +50,14 @@ function EventPage() {
     time: "",
     date: "",
     location: "",
-    antries:[]
+    antries: [],
   });
   function register(e: any) {
     let inputs = { [e.target.name]: e.target.value };
     setEvent({ ...event, ...inputs });
   }
 
-  onAuthStateChanged(auth, async () => {
+  onAuthStateChanged(auth , async()=> {
     const q = query(
       collection(db, "Users"),
       where("uid", "==", auth.currentUser?.uid)
@@ -65,7 +66,8 @@ function EventPage() {
     querySnapshot.forEach((doc) => {
       setuser(doc.data());
     });
-  });
+  })
+
   let submitH = async (e: any) => {
     let CreateE: any = document.getElementById("CreateE");
     if (CreateE.style.display === "block") {
@@ -95,10 +97,26 @@ function EventPage() {
       alert("Please Fill All Fields");
     }
   };
-let joiner = (e:any) => {
-console.log(e);
+  let joiner = async (e: any) => {
+    alert('Time Over Working On It In Home')
+    // let arr: any = [];
+    // let q: any = await getDocs(collection(db, "Events"));
+    // q.forEach((doc: any) => {
+    //   if (doc.id == e.docId) {
+    //     arr.push(...doc.data().antries);
+    //   }
+    // });
+    // arr = [...arr, user.userName];
+    // setarr1(arr);
 
-}
+    // let ref = doc(db, "Events", e.docId);
+    // updateDoc(ref, {
+    //   antries: arr1,
+    // });
+
+    // console.log('xyz..');
+    
+  };
   return (
     <div className={`${style.Parent} `}>
       <p>Events</p>
@@ -125,8 +143,9 @@ console.log(e);
                 addr={event.location}
                 time={event.time}
                 creator={event.creator}
-                Func={()=>joiner(event)}
+                Func={() => joiner(event)}
                 antr={event.antries}
+                // value2='Join Event'
               />
             </div>
           );
