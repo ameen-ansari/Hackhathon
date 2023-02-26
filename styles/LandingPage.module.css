@@ -1,0 +1,130 @@
+.Parent {
+  width: 100%;
+  background-image: url(../Images/hero-bg.png);
+}
+
+.Navbar {
+  width: 80%;
+  display: flex;
+  margin: auto;
+  padding: 1rem 0px;
+}
+
+.Navbar div:nth-child(1) {
+  flex: 3;
+}
+
+.Navbar div:nth-child(2) {
+  flex: 2;
+  display: flex;
+  gap: 1rem;
+}
+
+.Navbar div:nth-child(1) > p:nth-child(1) {
+  font-family: "Open Sans";
+  font-size: 34px;
+  color: white;
+}
+
+.Header {
+  display: flex;
+  padding: 2rem 1rem;
+}
+.Navbar div:nth-child(2) div:nth-child(3) {
+  display: none;
+}
+
+@media (max-width: 600px) {
+  .Header {
+    flex-direction: column;
+  }
+  .Navbar div:nth-child(1) {
+    flex: 3;
+  }
+  
+  .Navbar div:nth-child(2) {
+    flex: 1;
+  }
+  .Navbar div:nth-child(1) > p:nth-child(1) {
+    font-family: "Open Sans";
+    font-size: 32px;
+    color: white;
+  }
+  .Navbar div:nth-child(2) div:nth-child(1) {
+    display: none;
+  }
+  .Navbar div:nth-child(2) div:nth-child(2) {
+    display: none;
+  }
+  .Navbar div:nth-child(2) div:nth-child(3) {
+    display: block;
+    border: 0;
+    position: absolute;
+    top: 0.8rem;
+    right: 0.2rem;
+    padding: 1rem 2rem;
+  }
+}
+@media (max-width: 400px) {
+    .Navbar div:nth-child(1) {
+        flex: 4;
+      }
+      
+      .Navbar div:nth-child(2) {
+        flex: 1;
+      }
+      .Navbar div:nth-child(1) > p:nth-child(1) {
+        font-family: "Open Sans";
+        font-size: 28px;
+        color: white;
+        /* padding-top: 0.5rem; */
+      }
+    }
+.Header > div:nth-child(1) {
+  flex: 1;
+  padding: 4rem 1rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+}
+
+.Header > div > p:nth-child(1) {
+  font-family: "prata";
+  text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000,
+    1px 1px 0 #000;
+  font-size: 42px;
+  font-weight: 600;
+  color: white;
+}
+
+.Header > div > p:nth-child(2) {
+  font-family: "Open Sans";
+  font-size: 30px;
+  font-weight: 600;
+  color: white;
+  text-align: center;
+}
+.Header > div > div {
+  padding: 0.5rem 2rem;
+  background-color: #8a2be2;
+  border: 0;
+}
+.Header > div:nth-child(1) > div:hover {
+  padding: 0.5rem 2rem;
+}
+
+.Header > div:nth-child(2) {
+  flex: 1;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.Header > div:nth-child(2) > img {
+  width: 80%;
+  border-radius: 12px;
+}

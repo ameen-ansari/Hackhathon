@@ -1,0 +1,19 @@
+.parent {
+    height: 55px;
+    font-size: 20px;
+    font-weight: 600;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid white;
+    border-radius: 6px;
+    color: white;
+    text-align: center;
+    line-height:1.5rem;
+}
+
+.parent:hover {
+    background-color:#8a2be2    ;
+    transition: 0.4s;
+    border: black;
+}
