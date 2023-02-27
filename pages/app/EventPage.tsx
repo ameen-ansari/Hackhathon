@@ -46,6 +46,7 @@ function EventPage() {
                 creator={event.creator}
                 Func={() => joiner(event)}
                 antr={event.antries}
+                btnValue={event.status ? 'JOINED' : 'JOIN'}
               />
             </div>
           );

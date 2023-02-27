@@ -42,7 +42,7 @@ function Card(prop:any) {
               })}
             </div>
           </div>
-          <button style={{padding:'0.3rem 2rem' , borderRadius:9}} onClick={prop.Func} >join</button>
+          <button style={{padding:'0.3rem 2rem' , borderRadius:9}} onClick={prop.Func} >{prop.btnValue}</button>
         </div>
       </div>
     </div>
