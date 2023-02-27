@@ -2,22 +2,11 @@ import style from "@/styles/Event.module.css";
 import Event from "../../components/Card";
 import Button from "../../components/Button";
 import UseEventPage from "@/Hooks/UseEventPage";
-import { onAuthStateChanged } from "firebase/auth";
-import { auth, db } from "@/config/Firebase";
-import {
-  collection,
-  doc,
-  getDocs,
-  query,
-  updateDoc,
-  where,
-} from "firebase/firestore";
-import { useEffect } from "react";
 
 function EventPage() {
   const {
     submitH,
-    // joiner,
+    joiner,
     register,
     data,
     setdata,
@@ -29,61 +18,7 @@ function EventPage() {
     arr1,
     setarr1,
   } = UseEventPage();
-  // onAuthStateChanged(auth, async () => {
-  // const q = query(
-  //   collection(db, "Users"),
-  //   where("uid", "==", auth.currentUser?.uid)
-  // );
-  // const querySnapshot = await getDocs(q);
-  // querySnapshot.forEach((doc) => {
-  //   console.log(doc.data());
-  // });
-  // });
-  // useEffect(() => {
-  //   let a = async () => {
-  //     const q =await query(
-  //       collection(db, "Users"),
-  //       where("uid", "==", auth.currentUser?.uid)
-  //     );
-  //     const querySnapshot = await getDocs(q);
-  //     querySnapshot.forEach((doc) => {
-  //       let name = doc.data().userName;
-  //       setuser(name);
-  //     });
 
-  //     console.log(user);
-      
-  //   };
-  //   a();
-  // },[]);
-  let joiner = async (e: any) => {
-    alert('Time Out')
-    //   const q = query(
-    //     collection(db, "Users"),
-    //     where("uid", "==", auth.currentUser?.uid)
-    //   );
-    //   const querySnapshot = await getDocs(q);
-    //   querySnapshot.forEach((doc) => {
-    //  let name =  doc.data().userName
-    //     setuser(name)
-    //   });
-    // let arr: any = [];
-    // let q2: any = await getDocs(collection(db, "Events"));
-    // q2.forEach((doc: any) => {
-    //   if (doc.id == e.docId) {
-    //     arr.push(...doc.data().antries);
-    //   }
-    // });
-
-    // arr = [...arr, user.userName];
-    // setarr1(arr);
-    // console.log(user.userName);
-
-    // let ref = doc(db, "Events", e.docId);
-    // updateDoc(ref, {
-    //   antries: arr1,
-    // });
-  };
   return (
     <div className={`${style.Parent} `}>
       <p>Events</p>

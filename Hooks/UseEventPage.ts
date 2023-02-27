@@ -14,22 +14,7 @@ import { useEffect, useState } from "react";
 function UseEventPage() {
   const [data, setdata] = useState([]);
   const [arr1, setarr1] = useState([]);
-  const [user, setuser] = useState<any>({
-    userName: "",
-  });
-
-  //   useEffect(() => {
-  //     let arr: any = [];
-  //     let a = async () => {
-  //       let Q: any = await getDocs(collection(db, "Events"));
-  //       Q.forEach((doc: any) => {
-  //         arr.push(doc.data());
-  //       });
-  //       setdata(arr);
-  //       console.log(data);
-  //     };
-  //     a();
-  //   }, []);
+  const [user, setuser] = useState<any>("");
 
   let openForm = () => {
     let CreateE: any = document.getElementById("CreateE");
@@ -55,17 +40,6 @@ function UseEventPage() {
     setEvent({ ...event, ...inputs });
   }
 
-  // onAuthStateChanged(auth, async () => {
-  //   const q = query(
-  //     collection(db, "Users"),
-  //     where("uid", "==", auth.currentUser?.uid)
-  //   );
-  //   const querySnapshot = await getDocs(q);
-  //   querySnapshot.forEach((doc) => {
-  //     setuser(doc.data());
-  //   });
-  // });
-
   useEffect(() => {
     let arr: any = [];
     let a = async () => {
@@ -77,6 +51,14 @@ function UseEventPage() {
     };
     a();
   }, []);
+  useEffect(() => {
+    let myArr: any = [];
+    let a = async () => {
+      if (auth.currentUser) {
+      }
+    };
+    a();
+  }, [data]);
 
   let submitH = async (e: any) => {
     let CreateE: any = document.getElementById("CreateE");
@@ -106,32 +88,39 @@ function UseEventPage() {
       alert("Please Fill All Fields");
     }
   };
-  // let joiner =  (e: any) => {
-  //   // alert("Time Over Working On It In Home");
-  //   console.log(e);
-  //   console.log();
-    
 
-  //   // let arr: any = [];
-  //   // let q: any = await getDocs(collection(db, "Events"));
-  //   // q.forEach((doc: any) => {
-  //   //   if (doc.id == e.docId) {
-  //   //     arr.push(...doc.data().antries);
-  //   //   }
-  //   // });
-  //   // arr = [...arr, user.userName];
-  //   // setarr1(arr);
-
-  //   // let ref = doc(db, "Events", e.docId);
-  //   // updateDoc(ref, {
-  //   //   antries: arr1,
-  //   // });
-
-  //   // console.log('xyz..');
-  // };
+  let callback1 = async (e: any) => {
+    if (auth.currentUser) {
+      let arr: any = [];
+      let arr2: any = [];
+      console.log(auth.currentUser?.email);
+      data.forEach((event: any) => {
+        if (event.docId === e.docId) {
+          arr.push(...event.antries);
+        }
+      });
+      arr.forEach((doc: any) => {
+        if (doc !== auth.currentUser?.email) {
+          arr2.push(doc);
+        }else{
+          alert('Already joined')
+        }
+      });
+      arr = [...arr2, auth.currentUser?.email];
+      let ref = doc(db, "Events", e.docId);
+      updateDoc(ref, {
+        antries: arr,
+      });
+    } else {
+      alert("Please SignIn");
+    }
+  };
+  let joiner = async (e: any) => {
+    callback1(e);
+  };
   return {
     submitH,
-    // joiner,
+    joiner,
     register,
     data,
     setdata,
