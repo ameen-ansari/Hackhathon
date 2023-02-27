@@ -15,8 +15,6 @@ function EventPage() {
     setuser,
     event,
     setEvent,
-    arr1,
-    setarr1,
   } = UseEventPage();
 
   return (
@@ -47,7 +45,6 @@ function EventPage() {
                 creator={event.creator}
                 Func={() => joiner(event)}
                 antr={event.antries}
-                // value2='Join Event'
               />
             </div>
           );
@@ -57,7 +54,7 @@ function EventPage() {
         <form className="w-100">
           <div className="my-4">
             <input
-              type="email"
+              type="text"
               placeholder="Enter Title Of Event"
               className="form-control"
               id="exampleInputEmail1"

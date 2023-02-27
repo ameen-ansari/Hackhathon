@@ -13,7 +13,6 @@ import { useEffect, useState } from "react";
 
 function UseEventPage() {
   const [data, setdata] = useState([]);
-  const [arr1, setarr1] = useState([]);
   const [user, setuser] = useState<any>("");
 
   let openForm = () => {
@@ -40,25 +39,28 @@ function UseEventPage() {
     setEvent({ ...event, ...inputs });
   }
 
-  useEffect(() => {
+  onAuthStateChanged(auth, async () => {
+    const q = query(
+      collection(db, "Users"),
+      where("uid", "==", auth.currentUser?.uid)
+    );
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => {
+      setuser(doc.data());
+    });
+  });
+
+  let a = async () => {
     let arr: any = [];
-    let a = async () => {
-      let Q = await getDocs(collection(db, "Events"));
-      Q.forEach((doc: any) => {
-        arr.push(doc.data());
-      });
-      setdata(arr);
-    };
+    let Q = await getDocs(collection(db, "Events"));
+    Q.forEach((doc: any) => {
+      arr.push(doc.data());
+    });
+    setdata(arr);
+  };
+  useEffect(() => {
     a();
   }, []);
-  useEffect(() => {
-    let myArr: any = [];
-    let a = async () => {
-      if (auth.currentUser) {
-      }
-    };
-    a();
-  }, [data]);
 
   let submitH = async (e: any) => {
     let CreateE: any = document.getElementById("CreateE");
@@ -72,6 +74,7 @@ function UseEventPage() {
     }
 
     e.preventDefault();
+    let data2: any = [...data];
     if (auth.currentUser) {
       if (event.description && event.location) {
         try {
@@ -81,9 +84,18 @@ function UseEventPage() {
             docId: userEvent.id,
             creator: user.userName,
           });
+          data2 = [
+            ...data2,
+            {
+              ...event,
+              docId: userEvent.id,
+              creator: user.userName,
+            },
+          ];
+          setdata(data2);
           alert("Event Added");
         } catch (error) {
-          console.log(error);
+          alert(error);
         }
       } else {
         alert("Please Fill All Fields");
@@ -95,26 +107,28 @@ function UseEventPage() {
 
   let callback1 = async (e: any) => {
     if (auth.currentUser) {
-      let arr: any = [];
+      let arr3: any = [];
       let arr2: any = [];
-      console.log(auth.currentUser?.email);
       data.forEach((event: any) => {
         if (event.docId === e.docId) {
-          arr.push(...event.antries);
+          arr3.push(...event.antries);
         }
       });
-      arr.forEach((doc: any) => {
+      arr3.forEach((doc: any) => {
         if (doc !== auth.currentUser?.email) {
           arr2.push(doc);
+          arr3 = [...arr2, auth.currentUser?.email];
+          let ref = doc(db, "Events", e.docId);
+          updateDoc(ref, {
+            antries: arr3,
+          });
+
+          alert("Joined");
         } else {
           alert("Already joined");
         }
       });
-      arr = [...arr2, auth.currentUser?.email];
-      let ref = doc(db, "Events", e.docId);
-      updateDoc(ref, {
-        antries: arr,
-      });
+      a();
     } else {
       alert("Please SignIn");
     }
@@ -133,8 +147,6 @@ function UseEventPage() {
     setuser,
     event,
     setEvent,
-    arr1,
-    setarr1,
   };
 }
 
