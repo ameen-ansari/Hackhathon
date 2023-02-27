@@ -118,16 +118,16 @@ function UseEventPage() {
         if (doc !== auth.currentUser?.email) {
           arr2.push(doc);
           arr3 = [...arr2, auth.currentUser?.email];
-          let ref = doc(db, "Events", e.docId);
-          updateDoc(ref, {
-            antries: arr3,
-          });
 
-          alert("Joined");
         } else {
           alert("Already joined");
         }
       });
+      let ref = doc(db, "Events", e.docId);
+      updateDoc(ref, {
+        antries: arr3,
+      });
+      alert("Joined");
       a();
     } else {
       alert("Please SignIn");

@@ -19,14 +19,14 @@ font-size: 22px;
 font-weight: 600;
 width: 100%;
 }
-.cardP >  div:nth-child(2) > div  > p:nth-child(1){
+/* .cardP >  div:nth-child(2) > div  > p:nth-child(1){
     text-align: left;
     width: 20%;
 }
 .cardP >  div:nth-child(2) > div  > p:nth-child(2){
     text-align: left;
     width: 80%;
-}
+} */
 .cardP >  div:nth-child(2) > div > div{
 /* width: 40%; */
 display: flex;

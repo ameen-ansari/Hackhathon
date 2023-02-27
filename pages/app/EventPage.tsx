@@ -2,6 +2,7 @@ import style from "@/styles/Event.module.css";
 import Event from "../../components/Card";
 import Button from "../../components/Button";
 import UseEventPage from "@/Hooks/UseEventPage";
+import { auth } from "@/config/Firebase";
 
 function EventPage() {
   const {
