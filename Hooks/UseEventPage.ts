@@ -72,20 +72,24 @@ function UseEventPage() {
     }
 
     e.preventDefault();
-    if (event.description && event.location) {
-      try {
-        let userEvent: any = await addDoc(collection(db, "Events"), event);
-        let ref = doc(db, "Events", userEvent.id);
-        await updateDoc(ref, {
-          docId: userEvent.id,
-          creator: user.userName,
-        });
-        alert("Event Added");
-      } catch (error) {
-        console.log(error);
+    if (auth.currentUser) {
+      if (event.description && event.location) {
+        try {
+          let userEvent: any = await addDoc(collection(db, "Events"), event);
+          let ref = doc(db, "Events", userEvent.id);
+          await updateDoc(ref, {
+            docId: userEvent.id,
+            creator: user.userName,
+          });
+          alert("Event Added");
+        } catch (error) {
+          console.log(error);
+        }
+      } else {
+        alert("Please Fill All Fields");
       }
     } else {
-      alert("Please Fill All Fields");
+      alert("Please SignIn");
     }
   };
 
@@ -102,8 +106,8 @@ function UseEventPage() {
       arr.forEach((doc: any) => {
         if (doc !== auth.currentUser?.email) {
           arr2.push(doc);
-        }else{
-          alert('Already joined')
+        } else {
+          alert("Already joined");
         }
       });
       arr = [...arr2, auth.currentUser?.email];
