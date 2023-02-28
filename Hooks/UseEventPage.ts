@@ -157,6 +157,7 @@ function UseEventPage() {
             joinedEvents: [...userEventsTempArr , e.docId],
           });
           alert("JOiNED");
+          callback1(e)
         } catch (error) {
           alert(error);
         }
