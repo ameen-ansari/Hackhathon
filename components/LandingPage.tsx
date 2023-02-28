@@ -1,14 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import style from "../styles/LandingPage.module.css";
 import Button from "./Button";
 import eventtype from "../Images/eventtype.png";
 import Burger from "../Images/Group 1067 (1).png";
 import Image from "next/image";
-import { auth } from "@/config/Firebase";
 import LandingPag from "@/Hooks/UseLandingPage";
 
 function LandingPage() {
-  const { pushEventPage, pushSignInPage } = LandingPag();
+  const { pushEventPage, pushSignInPage ,indicator, setindicator} = LandingPag();
+
   return (
     <div className={style.Parent}>
       <div className={style.Navbar}>
@@ -17,10 +17,7 @@ function LandingPage() {
         </div>
         <div>
           <Button value="Show Events" Func={pushEventPage} />
-          <Button
-            value={auth.currentUser ? "LogOut" : "LogIn"}
-            Func={pushSignInPage}
-          />
+          <Button value={indicator} Func={pushSignInPage} />
           <Button value={<Image src={Burger} alt="" />} />
         </div>
       </div>

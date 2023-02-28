@@ -13,6 +13,7 @@ import { useEffect, useState } from "react";
 
 function UseEventPage() {
   const [data, setdata] = useState([]);
+  const [userEvents, setUserEvent] = useState([]);
   const [user, setuser] = useState<any>("");
 
   let openForm = () => {
@@ -39,15 +40,20 @@ function UseEventPage() {
     setEvent({ ...event, ...inputs });
   }
 
-  onAuthStateChanged(auth, async () => {
-    const q = query(
-      collection(db, "Users"),
-      where("uid", "==", auth.currentUser?.uid)
-    );
-    const querySnapshot = await getDocs(q);
-    querySnapshot.forEach((doc) => {
-      setuser(doc.data());
-    });
+  onAuthStateChanged(auth, async (user: any) => {
+    if (user) {
+      const q = query(
+        collection(db, "Users"),
+        where("uid", "==", auth.currentUser?.uid)
+      );
+      const querySnapshot = await getDocs(q);
+      querySnapshot.forEach((doc) => {
+        setuser(doc.data());
+        setUserEvent(doc.data().joinedEvents);
+      });
+    } else {
+      setuser("");
+    }
   });
 
   let a = async () => {
@@ -132,7 +138,30 @@ function UseEventPage() {
     }
   };
   let joiner = async (e: any) => {
-    callback1(e);
+    if (auth.currentUser) {
+      let userEventsTempArr: any = [...userEvents];
+      let getEvent = userEvents.some((docId: any) => {
+        if (docId === e.docId) {
+          alert("Already Jined");
+          return true;
+        } else {
+          return false;
+        }
+      });
+      if (getEvent === false) {
+        try {
+          console.log(userEvents);
+
+          let ref: any = doc(db, "Users", user.docId);
+          updateDoc(ref, {
+            joinedEvents: [...userEventsTempArr , e.docId],
+          });
+          alert("JOiNED");
+        } catch (error) {
+          alert(error);
+        }
+      }
+    }
   };
   return {
     submitH,

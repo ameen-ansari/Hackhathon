@@ -1,7 +1,10 @@
-import React  from "react";
+import { auth, db } from "@/config/Firebase";
+import { onAuthStateChanged } from "firebase/auth";
+import { collection, getDoc, getDocs } from "firebase/firestore";
+import React, { useEffect, useState } from "react";
 import style from "../styles/card.module.css";
 
-function Card(prop:any) {
+function Card(prop: any) {
   return (
     <div key={prop.key} style={{ fontFamily: "Open Sans" }}>
       <div className={`${style.cardP} card`}>
@@ -33,16 +36,19 @@ function Card(prop:any) {
           <div>
             <p>Attendees:</p>
             <div>
-              {prop.antr.map((user:any , i:any) => {
+              {prop?.antr?.map((user: any, i: any) => {
                 return (
                   <div key={i}>
-                    <p>{user}</p>
+                    <p style={{fontSize:'40%'}}>{user}</p>
                   </div>
                 );
               })}
             </div>
           </div>
-          <button style={{padding:'0.3rem 2rem' , borderRadius:9}} onClick={prop.Func} >{prop.btnValue}</button>
+          <button
+            style={{ padding: "0.3rem 2rem", borderRadius: 9 }}
+            onClick={prop.Func}
+          >Join</button>
         </div>
       </div>
     </div>

@@ -12,6 +12,7 @@ function UseSignUp() {
         phoneNumber: "",
         password: "",
         uid: "",
+        joinedEvents:[]
       });
       function register(e: any) {
         let inputs = { [e.target.name]: e.target.value };
