@@ -20,24 +20,6 @@ function EventPage() {
     event,
     setEvent,
   } = UseEventPage();
-  const [UserEvents, setUserEvents] = useState<any>([]);
-  onAuthStateChanged(auth, async (userfroms: any) => {
-    if (userfroms) {
-      let UserEventsTempArr: any = [];
-      let finallArr: any = [];
-      let Q: any = await getDocs(collection(db, "Users"));
-      Q.forEach((user: any, i: number) => {
-        if (user.data().uid == userfroms.uid) {
-          UserEventsTempArr.push(user.data().joinedEvents);
-          setUserEvents(UserEventsTempArr);
-        }
-      });
-    } else {
-    }
-  });
-  let userJorN: any = () => {
-    console.log(UserEvents);
-  };
 
   return (
     <div className={`${style.Parent} `}>
@@ -67,14 +49,8 @@ function EventPage() {
                 creator={event.creator}
                 Func={() => joiner(event)}
                 antr={event.antries}
+                docId={event.docId}
               />
-              {UserEvents.map((id: any, i: number) => {
-                return (
-                  <div key={i}>
-                    {id === event.docId ? <button>Joined</button> : null}
-                  </div>
-                );
-              })}
             </div>
           );
         })}

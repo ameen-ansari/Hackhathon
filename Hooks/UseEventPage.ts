@@ -22,9 +22,9 @@ function UseEventPage() {
       CreateE.style.display = "none";
     } else {
       CreateE.style.display = "block";
-      CreateE.style.position = "fixed";
-      CreateE.style.top = "15%";
-      CreateE.style.left = "15%";
+      // CreateE.style.position = "fixed";
+      // CreateE.style.top = "15%";
+      // CreateE.style.left = "15%";
     }
   };
   const [event, setEvent] = useState<any>({
@@ -74,9 +74,9 @@ function UseEventPage() {
       CreateE.style.display = "none";
     } else {
       CreateE.style.display = "block";
-      CreateE.style.position = "fixed";
-      CreateE.style.top = "15%";
-      CreateE.style.left = "15%";
+      // CreateE.style.position = "fixed";
+      // CreateE.style.top = "15%";
+      // CreateE.style.left = "15%";
     }
 
     e.preventDefault();
@@ -86,9 +86,14 @@ function UseEventPage() {
         try {
           let userEvent: any = await addDoc(collection(db, "Events"), event);
           let ref = doc(db, "Events", userEvent.id);
+          let ref2 = doc(db, "Users", user.docId);
           await updateDoc(ref, {
             docId: userEvent.id,
             creator: user.userName,
+            antries: [auth.currentUser.email],
+          });
+          await updateDoc(ref2, {
+            joinedEvents: [userEvent.id],
           });
           data2 = [
             ...data2,
@@ -96,9 +101,11 @@ function UseEventPage() {
               ...event,
               docId: userEvent.id,
               creator: user.userName,
+              antries: [auth.currentUser.email],
             },
           ];
           setdata(data2);
+          setEvent({ ...event, antries: [auth.currentUser.email] });
           alert("Event Added");
         } catch (error) {
           alert(error);
@@ -130,7 +137,6 @@ function UseEventPage() {
       alert("Joined");
       updateDoc(ref, {
         antries: arr3,
-        status: "Joined",
       });
       a();
     } else {
@@ -154,10 +160,10 @@ function UseEventPage() {
 
           let ref: any = doc(db, "Users", user.docId);
           updateDoc(ref, {
-            joinedEvents: [...userEventsTempArr , e.docId],
+            joinedEvents: [...userEventsTempArr, e.docId],
           });
+          callback1(e);
           alert("JOiNED");
-          callback1(e)
         } catch (error) {
           alert(error);
         }

@@ -5,19 +5,29 @@ display: flex;
 font-size: 20px;
 }  */
 .cardP {
-    width: 70vw;
+  width: 70vw;
+  margin: auto;
+}
+@media (max-width: 600px) {
+  .cardP {
+    width: 95vw;
     margin: auto;
+  }
+  .tmdt {
+    font-size: 16px;
+    text-align: center;
 }
-.cardP >  div:nth-child(2) {
-width: 100%;
 }
-.cardP >  div:nth-child(2) > div{
-/* width: 40%; */
-display: flex;
-gap: 1rem;
-font-size: 22px;
-font-weight: 600;
-width: 100%;
+.cardP > div:nth-child(2) {
+  width: 100%;
+}
+.cardP > div:nth-child(2) > div {
+  /* width: 40%; */
+  display: flex;
+  gap: 1rem;
+  font-size: 22px;
+  font-weight: 600;
+  width: 100%;
 }
 /* .cardP >  div:nth-child(2) > div  > p:nth-child(1){
     text-align: left;
@@ -27,11 +37,14 @@ width: 100%;
     text-align: left;
     width: 80%;
 } */
-.cardP >  div:nth-child(2) > div > div{
-/* width: 40%; */
-display: flex;
-flex-wrap: wrap;
-gap:0px  1rem;
-font-size: 22px;
-font-weight: 600;
+.cardP > div:nth-child(2) > div > div {
+  /* width: 40%; */
+  display: flex;
+  justify-content: left;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 0px 1rem;
+  font-size: 22px;
+  font-weight: 600;
 }
+

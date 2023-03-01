@@ -10,10 +10,23 @@ function LandingPage() {
     Router.push("/app/SignIn");
     signOut(auth);
   };
+  let showOff = () => {
+   let Header :any= document.getElementById('NavbarPlusHeader')
+   Header.style.display = 'none'
+   let offcan :any= document.getElementById('Offcan')
+   offcan.style.display = 'flex'    
 
+  };
+  let showNav = () => {
+   let Header :any= document.getElementById('NavbarPlusHeader')
+   Header.style.display = 'block'
+   let offcan :any= document.getElementById('Offcan')
+   offcan.style.display = 'none'    
+  };
   let pushEventPage = () => {
     Router.push("/app/EventPage");
   };
+
   onAuthStateChanged(auth, async (user: any) => {
     if (user) {
       setindicator("LogOut");
@@ -21,11 +34,14 @@ function LandingPage() {
       setindicator("LogIn");
     }
   });
+
   return {
     pushSignInPage,
     pushEventPage,
     indicator,
     setindicator,
+    showOff,
+    showNav
   };
 }
 

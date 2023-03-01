@@ -5,6 +5,21 @@ import React, { useEffect, useState } from "react";
 import style from "../styles/card.module.css";
 
 function Card(prop: any) {
+  const [UserEvents, setUserEvents] = useState<any>([]);
+  onAuthStateChanged(auth, async (userfroms: any) => {
+    if (userfroms) {
+      let UserEventsTempArr: any = [];
+      let finallArr: any = [];
+      let Q: any = await getDocs(collection(db, "Users"));
+      Q.forEach((user: any, i: number) => {
+        if (user.data().uid == userfroms.uid) {
+          UserEventsTempArr.push(...user.data().joinedEvents);
+          setUserEvents(UserEventsTempArr);
+        }
+      });
+    } else {
+    }
+  });
   return (
     <div key={prop.key} style={{ fontFamily: "Open Sans" }}>
       <div className={`${style.cardP} card`}>
@@ -29,7 +44,7 @@ function Card(prop: any) {
           </div>
           <div>
             <p>Date & Time:</p>
-            <p>
+            <p className={style.tmdt}>
               {prop.dt} {prop.time}
             </p>
           </div>
@@ -39,16 +54,39 @@ function Card(prop: any) {
               {prop?.antr?.map((user: any, i: any) => {
                 return (
                   <div key={i}>
-                    <p style={{fontSize:'40%'}}>{user}</p>
+                    <p style={{ fontSize: "40%" }}>{user}</p>
                   </div>
                 );
               })}
             </div>
           </div>
           <button
-            style={{ padding: "0.3rem 2rem", borderRadius: 9 }}
+            style={{
+              padding: "0.4rem 2rem",
+              borderRadius: "4px",
+              margin: "auto",
+            }}
             onClick={prop.Func}
-          >Join</button>
+          >
+            JOin
+          </button>
+          {UserEvents.map((id: any, i: number) => {
+            return (
+              <div key={i} style={{ width: "100%" }}>
+                {id == prop.docId ? (
+                  <button
+                    style={{
+                      padding: "0.4rem 2rem",
+                      borderRadius: "4px",
+                      margin: "auto",
+                    }}
+                  >
+                    You Are Joined
+                  </button>
+                ) : null}
+              </div>
+            );
+          })}
         </div>
       </div>
     </div>
