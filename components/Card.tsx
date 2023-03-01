@@ -32,7 +32,7 @@ function Card(prop: any) {
         <div className="card-body">
           <div>
             <p>Creater:</p>
-            <p>{prop.creator}</p>
+            <p style={{color:'green'}}>{prop.creator}</p>
           </div>
           <div>
             <p>Description:</p>
