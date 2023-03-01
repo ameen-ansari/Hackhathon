@@ -168,6 +168,8 @@ function UseEventPage() {
           alert(error);
         }
       }
+    }else{
+      alert('Please Login')
     }
   };
   return {
