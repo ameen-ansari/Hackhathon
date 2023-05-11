@@ -19,16 +19,6 @@ function LandingPage() {
   return (
     <>
       <div id="NavbarPlusHeader" className={style.Parent}>
-        <div className={style.Navbar}>
-          <div>
-            <p>Event Planner</p>
-          </div>
-          <div>
-            <Button value="Show Events" Func={pushEventPage} />
-            <Button value={indicator} Func={pushSignInPage} />
-            <Button Func={showOff} value={<Image src={Burger} alt="" />} />
-          </div>
-        </div>
         <div className={style.Header}>
           <div>
             <p>Your Events on-chain</p>

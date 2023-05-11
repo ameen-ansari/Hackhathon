@@ -22,9 +22,6 @@ function UseEventPage() {
       CreateE.style.display = "none";
     } else {
       CreateE.style.display = "block";
-      // CreateE.style.position = "fixed";
-      // CreateE.style.top = "15%";
-      // CreateE.style.left = "15%";
     }
   };
   const [event, setEvent] = useState<any>({
@@ -74,9 +71,6 @@ function UseEventPage() {
       CreateE.style.display = "none";
     } else {
       CreateE.style.display = "block";
-      // CreateE.style.position = "fixed";
-      // CreateE.style.top = "15%";
-      // CreateE.style.left = "15%";
     }
 
     e.preventDefault();
@@ -90,7 +84,7 @@ function UseEventPage() {
           await updateDoc(ref, {
             docId: userEvent.id,
             creator: user.userName,
-            antries: [auth.currentUser.email],
+            antries: [auth.currentUser.uid],
           });
           await updateDoc(ref2, {
             joinedEvents: [userEvent.id],
@@ -118,59 +112,77 @@ function UseEventPage() {
     }
   };
 
-  let callback1 = async (e: any) => {
-    if (auth.currentUser) {
-      let arr3: any = [];
-      let arr2: any = [];
-      data.forEach((event: any) => {
-        if (event.docId === e.docId) {
-          arr3.push(...event.antries);
-        }
-      });
-      arr3.forEach((doc: any) => {
-        if (doc !== auth.currentUser?.email) {
-          arr2.push(doc);
-        }
-      });
-      arr3 = [...arr2, auth.currentUser?.email];
-      let ref = doc(db, "Events", e.docId);
-      alert("Joined");
-      updateDoc(ref, {
-        antries: arr3,
-      });
-      a();
-    } else {
-      alert("Please SignIn");
-    }
-  };
-  let joiner = async (e: any) => {
-    if (auth.currentUser) {
-      let userEventsTempArr: any = [...userEvents];
-      let getEvent = userEvents.some((docId: any) => {
-        if (docId === e.docId) {
-          alert("Already Jined");
-          return true;
-        } else {
-          return false;
-        }
-      });
-      if (getEvent === false) {
-        try {
-          console.log(userEvents);
+  // let callback1 = async (e: any) => {
+  //   if (auth.currentUser) {
+  //     let arr3: any = [];
+  //     let arr2: any = [];
+  //     data.forEach((event: any) => {
+  //       if (event.docId === e.docId) {
+  //         arr3.push(...event.antries);
+  //       }
+  //     });
+  //     arr3.forEach((doc: any) => {
+  //       if (doc !== auth.currentUser?.email) {
+  //         arr2.push(doc);
+  //       }
+  //     });
+  //     arr3 = [...arr2, auth.currentUser?.email];
+  //     let ref = doc(db, "Events", e.docId);
+  //     alert("Joined");
+  //     updateDoc(ref, {
+  //       antries: arr3,
+  //     });
+  //     a();
+  //   } else {
+  //     alert("Please SignIn");
+  //   }
+  // };
+  // let joiner = async (e: any) => {
+  //   if (auth.currentUser) {
+  //     let userEventsTempArr: any = [...userEvents];
+  //     let getEvent = userEvents.some((docId: any) => {
+  //       if (docId === e.docId) {
+  //         alert("Already Jined");
+  //         return true;
+  //       } else {
+  //         return false;
+  //       }
+  //     });
+  //     if (getEvent === false) {
+  //       try {
+  //         console.log(userEvents);
 
-          let ref: any = doc(db, "Users", user.docId);
-          updateDoc(ref, {
-            joinedEvents: [...userEventsTempArr, e.docId],
-          });
-          callback1(e);
-          alert("JOiNED");
-        } catch (error) {
-          alert(error);
-        }
+  //         let ref: any = doc(db, "Users", user.docId);
+  //         updateDoc(ref, {
+  //           joinedEvents: [...userEventsTempArr, e.docId],
+  //         });
+  //         callback1(e);
+  //         alert("JOiNED");
+  //       } catch (error) {
+  //         alert(error);
+  //       }
+  //     }
+  //   }else{
+  //     alert('Please Login')
+  //   }
+  // };
+
+  let joiner = async (e: any) => {
+    let EventRef = doc(db, "Events", e.docId);
+    let eventEntries: any = [];
+
+    if (auth.currentUser) {
+      if (e.antries.includes(auth.currentUser.uid)) {
+        alert("leave");
+      } else {
+        let userUID: any = [auth?.currentUser.uid];
+        let entries: any = [...userUID, ...e.antries];
+        await updateDoc(EventRef, {
+          antries: entries,
+        });
       }
-    }else{
-      alert('Please Login')
     }
+    console.log(eventEntries);
   };
   return {
     submitH,

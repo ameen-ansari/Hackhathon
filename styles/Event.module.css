@@ -1,5 +1,4 @@
 .Parent {
-  text-align: center;
   font-weight: 600;
   background-color: #f6f6f6;
   padding: 2rem 0px;
@@ -9,6 +8,7 @@
 .Parent > p:nth-child(1) {
   font-family: "prata";
   font-size: 42px;
+  text-align: center;
 }
 
 .Parent > div:nth-child(2) {
@@ -33,7 +33,7 @@
   background-color: #e4e4e4;
   border-radius: 6px;
   display: none;
-  position: absolute;
+  position: fixed;
   top: 15%;
   left: 15%;
 }
@@ -49,4 +49,40 @@
 .CreateE input {
   font-size: 20px;
   font-family: "Open Sans";
+}
+
+.eventContainer {
+  background-color: #f9f9f9;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 20px;
+  margin-bottom: 20px;
+  width: 80%;
+  position: relative;
+}
+
+@media (max-width: 600px) {
+.eventContainer {
+  width: 95%;
+}
+}
+
+.eventHeading {
+  font-size: 30px;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.eventDetail {
+  display: grid;
+  gap: 10px;
+  width: 90%;
+}
+
+.eventItem {
+  font-size: 20px;
+  line-height: 1.5;
+}
+.eventItem dt{
+margin-top: 1rem;
 }

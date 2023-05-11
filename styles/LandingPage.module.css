@@ -1,7 +1,8 @@
 .Parent {
   width: 100%;
-  background-image: url(../Images/hero-bg.png);
-  background-repeat: no-repeat;
+  background-color: #f9f9f9;
+  /* background-image: url(../Images/hero-bg.png);
+  background-repeat: no-repeat; */
 }
 
 .Navbar {
@@ -57,7 +58,6 @@
   top: 5px;
   right: 15px;
   font-weight: 700;
-  color: white;
 }
 
 @media (max-width: 600px) {
@@ -73,8 +73,7 @@
   }
   .Navbar div:nth-child(1) > p:nth-child(1) {
     font-family: "Open Sans";
-    font-size: 32px;
-    color: white;
+    font-size: 50px;
   }
   .Navbar div:nth-child(2) div:nth-child(1) {
     display: none;
@@ -102,7 +101,6 @@
       .Navbar div:nth-child(1) > p:nth-child(1) {
         font-family: "Open Sans";
         font-size: 28px;
-        color: white;
         /* padding-top: 0.5rem; */
       }
     }
@@ -118,20 +116,17 @@
 }
 
 .Header > div > p:nth-child(1) {
-  font-family: "prata";
   text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000,
     1px 1px 0 #000;
-  font-size: 42px;
+  font-size: 36px;
   font-weight: 600;
-  color: white;
 }
 
 .Header > div > p:nth-child(2) {
-  font-family: "Open Sans";
-  font-size: 30px;
+  font-size: 20px;
   font-weight: 600;
-  color: white;
   text-align: center;
+  padding: 0rem 3rem;
 }
 .Header > div > div {
   padding: 0.5rem 2rem;

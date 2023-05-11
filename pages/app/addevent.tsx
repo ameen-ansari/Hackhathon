@@ -25,7 +25,7 @@ function EventPage() {
     <div className={`${style.Parent} `}>
       <p>Events</p>
       <Button value="Create Event" Func={openForm} />
-      <p style={{ fontSize: 22 }} className="my-5">
+      <p style={{ fontSize: 22 }} className="my-5 text-center">
         AVAILABLE EVENTS
       </p>
       <div
@@ -35,22 +35,66 @@ function EventPage() {
           alignItems: "center",
           flexDirection: "column",
           flexWrap: "wrap",
-          gap: "2rem",
         }}
       >
         {data.map((event: any, i: any) => {
           return (
-            <div key={i}>
-              <Event
-                desc={event.description}
-                dt={event.date}
-                addr={event.location}
-                time={event.time}
-                creator={event.creator}
-                Func={() => joiner(event)}
-                antr={event.antries}
-                docId={event.docId}
-              />
+            // <div key={i}>
+            //   <Event
+            //     desc={event.description}
+            //     dt={event.date}
+            //     addr={event.location}
+            //     time={event.time}
+            //     creator={event.creator}
+            //     Func={() => joiner(event)}
+            //     antr={event.antries}
+            //     docId={event.docId}
+            //   />
+            // </div>
+            <div className={style.eventContainer} key={i}>
+              <button
+                style={{
+                  borderRadius: 4,
+                  padding: "2px 15px",
+                  fontSize: 16,
+                  cursor: "pointer",
+                  position: "absolute",
+                  right: 25,
+                }}
+                onClick={() => joiner(event)}
+              >
+                <b>Join</b>
+              </button>
+              <h2 className={style.eventHeading}>Event Details</h2>
+              <div className={style.eventDetail}>
+                <dl className={style.eventItem}>
+                  <dt>Description:</dt>
+                  <dd style={{ marginLeft: 70 }}>{event.description}</dd>
+                  <dt>Date:</dt>
+                  <dd style={{ marginLeft: 70 }}>{event.date}</dd>
+                  <dt>Author:</dt>
+                  <dd style={{ marginLeft: 70 }}>{event.creator}</dd>
+                  <dt>Address:</dt>
+                  <dd style={{ marginLeft: 70 }}>
+                    <i> {event.location}</i>
+                  </dd>
+                  <dt >antries:</dt>
+                  <dd style={{ marginLeft: 70 }}>
+                    <button 
+                      style={{
+                        borderRadius: 4,
+                        padding: "2px 15px",
+                        fontSize: 16,
+                        cursor: "pointer",
+                        border: "none",
+                        fontWeight: 600,
+                      }}
+                    >
+                      <u>Show Entries</u>
+                    </button>
+                  </dd>
+                </dl>
+              </div>
             </div>
           );
         })}
