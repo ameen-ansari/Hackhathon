@@ -6,6 +6,7 @@ import { auth, db } from "@/config/Firebase";
 import { onAuthStateChanged } from "firebase/auth";
 import { collection, getDocs } from "firebase/firestore";
 import { useState } from "react";
+import { useSelector } from "react-redux";
 
 function EventPage() {
   const {
@@ -20,6 +21,10 @@ function EventPage() {
     event,
     setEvent,
   } = UseEventPage();
+  let store: any = useSelector((store: any) => store.reducers);
+  let u:any = ():any => {
+    return "hello";
+  };
 
   return (
     <div className={`${style.Parent} `}>
@@ -37,20 +42,8 @@ function EventPage() {
           flexWrap: "wrap",
         }}
       >
-        {data.map((event: any, i: any) => {
+        {store.events.map((event: any, i: any) => {
           return (
-            // <div key={i}>
-            //   <Event
-            //     desc={event.description}
-            //     dt={event.date}
-            //     addr={event.location}
-            //     time={event.time}
-            //     creator={event.creator}
-            //     Func={() => joiner(event)}
-            //     antr={event.antries}
-            //     docId={event.docId}
-            //   />
-            // </div>
             <div className={style.eventContainer} key={i}>
               <button
                 style={{
@@ -63,9 +56,13 @@ function EventPage() {
                 }}
                 onClick={() => joiner(event)}
               >
-                <b>Join</b>
+                <b>
+                  {store?.user?.joinedEvents?.includes(event.docId)
+                    ? "Leave"
+                    : "Join"}
+                </b>
               </button>
-              <h2 className={style.eventHeading}>Event Details</h2>
+              <h2 className={style.eventHeading}>{event.title}</h2>
               <div className={style.eventDetail}>
                 <dl className={style.eventItem}>
                   <dt>Description:</dt>
@@ -73,14 +70,14 @@ function EventPage() {
                   <dt>Date:</dt>
                   <dd style={{ marginLeft: 70 }}>{event.date}</dd>
                   <dt>Author:</dt>
-                  <dd style={{ marginLeft: 70 }}>{event.creator}</dd>
+                  <dd style={{ marginLeft: 70 }}>{event.author}</dd>
                   <dt>Address:</dt>
                   <dd style={{ marginLeft: 70 }}>
                     <i> {event.location}</i>
                   </dd>
-                  <dt >antries:</dt>
+                  <dt>antries:</dt>
                   <dd style={{ marginLeft: 70 }}>
-                    <button 
+                    <button
                       style={{
                         borderRadius: 4,
                         padding: "2px 15px",

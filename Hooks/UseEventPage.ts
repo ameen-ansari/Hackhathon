@@ -1,21 +1,33 @@
 import { auth, db } from "@/config/Firebase";
+import {
+  addEvents,
+  addUser,
+  updateEntries,
+  updateEvents,
+  updateJoinedEvents,
+} from "@/store/reducers";
 import { onAuthStateChanged } from "firebase/auth";
 import {
   addDoc,
   collection,
   doc,
+  getDoc,
   getDocs,
   query,
   updateDoc,
   where,
 } from "firebase/firestore";
 import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 function UseEventPage() {
+  let dispatch = useDispatch();
+  let store: any = useSelector((store: any) => store.reducers);
   const [data, setdata] = useState([]);
-  const [userEvents, setUserEvent] = useState([]);
+  // const [userEvent, setUserEvent] = useState([]);
   const [user, setuser] = useState<any>("");
 
+  //Manage the form of event
   let openForm = () => {
     let CreateE: any = document.getElementById("CreateE");
     if (CreateE.style.display === "block") {
@@ -24,165 +36,151 @@ function UseEventPage() {
       CreateE.style.display = "block";
     }
   };
+
+  // Make state for the event ref in DB
   const [event, setEvent] = useState<any>({
     title: "",
     description: "",
     time: "",
     date: "",
     location: "",
+    author: "",
     antries: [],
   });
+
+  //Set user inputs as a state
   function register(e: any) {
     let inputs = { [e.target.name]: e.target.value };
     setEvent({ ...event, ...inputs });
   }
 
-  onAuthStateChanged(auth, async (user: any) => {
-    if (user) {
-      const q = query(
-        collection(db, "Users"),
-        where("uid", "==", auth.currentUser?.uid)
-      );
-      const querySnapshot = await getDocs(q);
-      querySnapshot.forEach((doc) => {
-        setuser(doc.data());
-        setUserEvent(doc.data().joinedEvents);
-      });
-    } else {
-      setuser("");
-    }
-  });
-
-  let a = async () => {
-    let arr: any = [];
-    let Q = await getDocs(collection(db, "Events"));
-    Q.forEach((doc: any) => {
-      arr.push(doc.data());
+  //Make a function for get events from DB
+  let getAvailableEvents = async () => {
+    let userEvents: any = [];
+    let Q1 = await getDocs(collection(db, "Events"));
+    Q1.forEach((doc: any) => {
+      userEvents.push(doc.data());
     });
-    setdata(arr);
+    setdata(userEvents);
+    return userEvents;
   };
+
+  //Make a function for get user info from DB
+  let getUserData = async () => {
+    let user;
+    if (auth.currentUser) {
+      let docRef = doc(db, "Users", auth.currentUser?.uid);
+      user = await getDoc(docRef);
+      return user.data();
+    }
+  };
+
   useEffect(() => {
-    a();
+    getAvailableEvents().then((Events) => {
+      //Update the store
+      dispatch(addEvents(Events));
+      getUserData().then((user) => {
+        //Update the store again
+        dispatch(addUser(user));
+      });
+    });
   }, []);
 
   let submitH = async (e: any) => {
-    let CreateE: any = document.getElementById("CreateE");
-    if (CreateE.style.display === "block") {
-      CreateE.style.display = "none";
-    } else {
-      CreateE.style.display = "block";
-    }
-
     e.preventDefault();
-    let data2: any = [...data];
+    // Close the Event Adding Menu
+    openForm();
     if (auth.currentUser) {
       if (event.description && event.location) {
         try {
-          let userEvent: any = await addDoc(collection(db, "Events"), event);
-          let ref = doc(db, "Events", userEvent.id);
-          let ref2 = doc(db, "Users", user.docId);
-          await updateDoc(ref, {
-            docId: userEvent.id,
-            creator: user.userName,
+          //add event in DB
+          let eventStatus: any = await addDoc(collection(db, "Events"), event);
+          // ref..
+          let eventRef = doc(db, "Events", eventStatus.id);
+          let userRef = doc(db, "Users", auth.currentUser.uid);
+          // update event antry in DB
+          await updateDoc(eventRef, {
+            docId: eventStatus.id,
+            author: auth.currentUser.uid,
             antries: [auth.currentUser.uid],
           });
-          await updateDoc(ref2, {
-            joinedEvents: [userEvent.id],
+          let userJoinedEvents = [...store.user.joinedEvents, eventStatus.id];
+          // update user events in DB
+          await updateDoc(userRef, {
+            joinedEvents: userJoinedEvents,
           });
-          data2 = [
-            ...data2,
-            {
-              ...event,
-              docId: userEvent.id,
-              creator: user.userName,
-              antries: [auth.currentUser.email],
-            },
-          ];
-          setdata(data2);
-          setEvent({ ...event, antries: [auth.currentUser.email] });
-          alert("Event Added");
+          //Update event in store very_important
+          dispatch(updateJoinedEvents({ userJoinedEvents: userJoinedEvents }));
+          //make the event
+          let newEvent = {
+            docId: eventStatus.id,
+            author: auth.currentUser.uid,
+            antries: [auth.currentUser.uid],
+            ...event,
+          };
+
+          // update the store
+
+          dispatch(updateEvents(newEvent));
         } catch (error) {
           alert(error);
         }
       } else {
-        alert("Please Fill All Fields");
+        alert("Invalid Inputs");
       }
     } else {
-      alert("Please SignIn");
+      alert("Please SignUp");
     }
   };
 
-  // let callback1 = async (e: any) => {
-  //   if (auth.currentUser) {
-  //     let arr3: any = [];
-  //     let arr2: any = [];
-  //     data.forEach((event: any) => {
-  //       if (event.docId === e.docId) {
-  //         arr3.push(...event.antries);
-  //       }
-  //     });
-  //     arr3.forEach((doc: any) => {
-  //       if (doc !== auth.currentUser?.email) {
-  //         arr2.push(doc);
-  //       }
-  //     });
-  //     arr3 = [...arr2, auth.currentUser?.email];
-  //     let ref = doc(db, "Events", e.docId);
-  //     alert("Joined");
-  //     updateDoc(ref, {
-  //       antries: arr3,
-  //     });
-  //     a();
-  //   } else {
-  //     alert("Please SignIn");
-  //   }
-  // };
-  // let joiner = async (e: any) => {
-  //   if (auth.currentUser) {
-  //     let userEventsTempArr: any = [...userEvents];
-  //     let getEvent = userEvents.some((docId: any) => {
-  //       if (docId === e.docId) {
-  //         alert("Already Jined");
-  //         return true;
-  //       } else {
-  //         return false;
-  //       }
-  //     });
-  //     if (getEvent === false) {
-  //       try {
-  //         console.log(userEvents);
-
-  //         let ref: any = doc(db, "Users", user.docId);
-  //         updateDoc(ref, {
-  //           joinedEvents: [...userEventsTempArr, e.docId],
-  //         });
-  //         callback1(e);
-  //         alert("JOiNED");
-  //       } catch (error) {
-  //         alert(error);
-  //       }
-  //     }
-  //   }else{
-  //     alert('Please Login')
-  //   }
-  // };
-
   let joiner = async (e: any) => {
-    let EventRef = doc(db, "Events", e.docId);
-    let eventEntries: any = [];
-
     if (auth.currentUser) {
-      if (e.antries.includes(auth.currentUser.uid)) {
-        alert("leave");
-      } else {
-        let userUID: any = [auth?.currentUser.uid];
-        let entries: any = [...userUID, ...e.antries];
-        await updateDoc(EventRef, {
-          antries: entries,
+      // ref.
+      let userRef = doc(db, "Users", auth.currentUser.uid);
+      let eventRef = doc(db, "Events", e.docId);
+      if (store.user.joinedEvents.includes(e.docId)) {
+        //remove antry id from DB
+        let updatedAntries: any = [];
+        e.antries.forEach((eachAntry: any) => {
+          if (eachAntry !== auth.currentUser?.uid) {
+            updatedAntries.push(eachAntry);
+          }
         });
+        await updateDoc(eventRef, {
+          antries: updatedAntries,
+        });
+        dispatch(updateEntries({ entries: updatedAntries }));
+        //remove id from DB
+        let userJoinedEvents: any = [];
+        store.user.joinedEvents.forEach((userDocId: any) => {
+          if (userDocId !== e.docId) {
+            userJoinedEvents.push(userDocId);
+          }
+        });
+        await updateDoc(userRef, {
+          joinedEvents: userJoinedEvents,
+        });
+        alert("Removed");
+        //update store
+        dispatch(updateJoinedEvents({ userJoinedEvents: userJoinedEvents }));
+      } else {
+        let updatedAntries = [...e.antries, auth.currentUser.uid];
+        // update event antry in DB
+        await updateDoc(eventRef, {
+          antries: updatedAntries,
+        });
+        let userJoinedEvents = [...store.user.joinedEvents, e.docId];
+        // update user events in DB
+        await updateDoc(userRef, {
+          joinedEvents: userJoinedEvents,
+        });
+        alert("Event Joined");
+        //Update event in store very_important
+        dispatch(updateJoinedEvents({ userJoinedEvents: userJoinedEvents }));
       }
+    } else {
+      alert("Please Signup");
     }
-    console.log(eventEntries);
   };
   return {
     submitH,
