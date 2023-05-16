@@ -2,6 +2,7 @@ import { auth, db } from "@/config/Firebase";
 import {
   addEvents,
   addUser,
+  calledEventEntries,
   updateEntries,
   updateEvents,
   updateJoinedEvents,
@@ -17,6 +18,7 @@ import {
   updateDoc,
   where,
 } from "firebase/firestore";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -101,7 +103,10 @@ function UseEventPage() {
           // update event antry in DB
           await updateDoc(eventRef, {
             docId: eventStatus.id,
-            author: auth.currentUser.uid,
+            author: {
+              authorUID: auth.currentUser.uid,
+              authorName: store.user.userName,
+            },
             antries: [auth.currentUser.uid],
           });
           let userJoinedEvents = [...store.user.joinedEvents, eventStatus.id];
@@ -182,6 +187,13 @@ function UseEventPage() {
       alert("Please Signup");
     }
   };
+  let router = useRouter();
+  let showEntries = (e: any) => {
+    dispatch(calledEventEntries(e));
+    setTimeout(() => {
+      router.push("/app/event/entries");
+    }, 1000);
+  };
   return {
     submitH,
     joiner,
@@ -192,6 +204,7 @@ function UseEventPage() {
     user,
     setuser,
     event,
+    showEntries,
     setEvent,
   };
 }

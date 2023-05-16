@@ -9,20 +9,10 @@ import { useState } from "react";
 import { useSelector } from "react-redux";
 
 function EventPage() {
-  const {
-    submitH,
-    joiner,
-    register,
-    data,
-    setdata,
-    openForm,
-    user,
-    setuser,
-    event,
-    setEvent,
-  } = UseEventPage();
+  const { submitH, joiner, register, openForm, event, setEvent, showEntries } =
+    UseEventPage();
   let store: any = useSelector((store: any) => store.reducers);
-  let u:any = ():any => {
+  let u: any = (): any => {
     return "hello";
   };
 
@@ -70,7 +60,7 @@ function EventPage() {
                   <dt>Date:</dt>
                   <dd style={{ marginLeft: 70 }}>{event.date}</dd>
                   <dt>Author:</dt>
-                  <dd style={{ marginLeft: 70 }}>{event.author}</dd>
+                  <dd style={{ marginLeft: 70 }}>{event.author.authorName}</dd>
                   <dt>Address:</dt>
                   <dd style={{ marginLeft: 70 }}>
                     <i> {event.location}</i>
@@ -86,6 +76,7 @@ function EventPage() {
                         border: "none",
                         fontWeight: 600,
                       }}
+                      onClick={() => showEntries(event.antries)}
                     >
                       <u>Show Entries</u>
                     </button>

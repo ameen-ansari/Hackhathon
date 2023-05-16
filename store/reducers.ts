@@ -31,8 +31,18 @@ let events: any = createSlice({
       return events;
     },
     updateEntries: (state, action: PayloadAction<{ entries: string[] }>) => {
-      const { entries } = action.payload;
+      let { entries } = action.payload;
       state.antries = entries;
+    },
+  },
+});
+
+let entries: any = createSlice({
+  name: "events",
+  initialState,
+  reducers: {
+    calledEventEntries: (state, action) => {
+      return action.payload;
     },
   },
 });
@@ -40,7 +50,9 @@ let events: any = createSlice({
 export default combineReducers({
   user: user.reducer,
   events: events.reducer,
+  entries: entries.reducer,
 });
 
 export const { addEvents, updateEvents, updateEntries } = events.actions;
 export const { addUser, updateJoinedEvents } = user.actions;
+export const { calledEventEntries } = entries.actions;
